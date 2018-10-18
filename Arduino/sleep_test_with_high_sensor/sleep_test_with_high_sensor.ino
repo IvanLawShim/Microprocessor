@@ -2,7 +2,7 @@
 #include <avr/sleep.h>
 #include <avr/power.h>
 #include <avr/wdt.h>
-//#define LED_PIN (13)
+#define LED_PIN (13)
 
 // This variable is made volatile because it is changed inside
 // an interrupt function
@@ -106,16 +106,25 @@ void loop() {
   int INTR = 0;
   for(int i = 0;;i++){ 
     x = digitalRead(2);
-    if (x==LOW){
+    y = digitalRead(3);
+    if (x==LOW && y==HIGH){
       digitalWrite(12,HIGH);
+      digitalWrite(13,LOW);
       Serial.println("Water is low.");
     }
-    else{
+    if(x==HIGH && y==LOW){
       digitalWrite(12,LOW);
+      digitalWrite(13,HIGH);
+      Serial.println("Water is high.");
+    }
+    if(x==HIGH&&y==HIGH){
+      digitalWrite(12,LOW);
+      digitalWrite(13,LOW);
       Serial.println("Water level stabilized.");
       break;
       }
     digitalWrite(12,LOW);
+    digitalWrite(13,LOW);
   }
 
 
